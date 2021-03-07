@@ -7,7 +7,6 @@ const {
 } = require('electron');
 const { writeFile } = require('fs');
 const { dialog, Menu } = remote;
-const { buildFromTemplate } = Menu;
 
 // Expose protected methods that allow the renderer process to use
 // the ipcRenderer without exposing the entire object
@@ -44,5 +43,13 @@ contextBridge.exposeInMainWorld('api', {
   createMenu(template) {
     const menu = Menu.buildFromTemplate(template);
     menu.popup();
+  },
+  async getBufferFromRecordedChunks(recordedChunks) {
+    const blob = new Blob(recordedChunks, {
+      type: 'video/webm; codecs=vp9',
+    });
+
+    const buffer = Buffer.from(await blob.arrayBuffer());
+    return buffer;
   },
 });
