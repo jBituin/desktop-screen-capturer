@@ -39,29 +39,10 @@ contextBridge.exposeInMainWorld('api', {
   getRemoteModules() {
     return {
       dialog,
-      buildFromTemplate,
-      getMenu: () => Menu,
     };
   },
-  tryMenu() {
-    console.log('Menu', Menu);
-    const menu = Menu.buildFromTemplate([
-      {
-        label: 'Joms',
-        submenu: [
-          { role: 'about' },
-          { type: 'separator' },
-          { role: 'services' },
-          { type: 'separator' },
-          { role: 'hide' },
-          { role: 'hideothers' },
-          { role: 'unhide' },
-          { type: 'separator' },
-          { role: 'quit' },
-        ],
-      },
-    ]);
-    Menu.setApplicationMenu(menu);
+  createMenu(template) {
+    const menu = Menu.buildFromTemplate(template);
     menu.popup();
   },
 });
