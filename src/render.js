@@ -10,7 +10,7 @@ const { dialog } = getRemoteModules();
 const { writeFile } = getFsModules();
 
 let recorder;
-const recorderOoptions = { mimeType: 'video/webm; codecs=vp9' };
+const recorderOptions = { mimeType: 'video/webm; codecs=vp9' };
 const recordedChunks = [];
 
 const videoElement = document.querySelector('video');
@@ -76,7 +76,7 @@ async function selectSource(source) {
   const stream = await getStream(source.id);
   playStream(stream);
 
-  recorder = new MediaRecorder(stream, recorderOoptions);
+  recorder = new MediaRecorder(stream, recorderOptions);
   recorder.ondataavailable = handleDataAvailable;
   recorder.onstop = handleStop;
 }
