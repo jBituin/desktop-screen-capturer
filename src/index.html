@@ -2,21 +2,53 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Hello World!</title>
+    <title>Scrn Cptr</title>
     <link
       href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
       rel="stylesheet"
     />
-
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .body-bg {
+        background-color: #9921e8;
+        background-image: linear-gradient(315deg, #9921e8 0%, #5f72be 74%);
+      }
+    </style>
     <link rel="stylesheet" href="index.css" />
     <script defer src="render.js"></script>
   </head>
-  <body>
-    <h1>Screen Recorder</h1>
-    <video></video>
-    <button id="start-button">Start</button>
-    <button id="stop-button">Stop</button>
-    <hr />
-    <button id="select-video">Choose video source</button>
+  <body
+    class="body-bg min-h-screen pt-8 pb-6 px-2 md:px-0"
+    style="font-family: 'Lato', sans-serif"
+  >
+    <header class="max-w-lg mx-auto">
+      <h1 class="text-4xl font-bold text-white text-center">
+        Scrn Cptr -
+        <a id="select-video" href="#" class="font-bold m-auto underline">
+          Choose video source
+        </a>
+      </h1>
+    </header>
+
+    <main class="max-w-lg mx-auto my-10 rounded-lg">
+      <video></video>
+    </main>
+    <div class="max-w-lg mx-auto flex justify-center text-white">
+      <button
+        id="record-button"
+        class="bg-purple-600 hover:bg-purple-700 text-white font-bold p-4 w-48 rounded shadow-lg hover:shadow-xl transition duration-200"
+        type="button"
+      >
+        <span
+          id="recording-pulse"
+          class="animate-pulse w-3 h-3 rounded-full bg-red-400 rounded-lg"
+        >
+        </span>
+        <span id="recording-text">Record</span>
+      </button>
+    </div>
   </body>
 </html>
