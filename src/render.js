@@ -111,7 +111,7 @@ async function handleStop() {
   const buffer = await getBufferFromRecordedChunks(recordedChunks);
   const { filePath } = await dialog.showSaveDialog({
     buttonLabel: 'Save',
-    defaultPath: `scrn-captr-${Date.now()}.webm`,
+    defaultPath: `scrn-rcrd-${Date.now()}.webm`,
   });
 
   if (filePath) {
