@@ -1,5 +1,4 @@
 const {
-  app,
   contextBridge,
   ipcRenderer,
   desktopCapturer,
