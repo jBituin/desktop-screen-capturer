@@ -6,15 +6,30 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
+let isPackaged = false;
+
+if (
+  process.mainModule &&
+  process.mainModule.filename.indexOf('app.asar') !== -1
+) {
+  isPackaged = true;
+} else if (
+  process.argv.filter((a) => a.indexOf('app.asar') !== -1).length > 0
+) {
+  isPackaged = true;
+}
+
 let mainWindow;
 
 const createWindow = () => {
+  const appIcon = path.join(__dirname, '../static/app-icon.png');
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     minWidth: 500,
     minHeight: 300,
+    icon: appIcon,
     webPreferences: {
       contextIsolation: true,
       enableRemoteModule: true,
@@ -22,11 +37,15 @@ const createWindow = () => {
     },
   });
 
+  mainWindow.setIcon(appIcon);
+
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  if (!isPackaged) {
+    // Open the DevTools.
+    mainWindow.webContents.openDevTools();
+  }
 };
 
 // This method will be called when Electron has finished
