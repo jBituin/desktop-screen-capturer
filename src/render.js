@@ -37,6 +37,9 @@ recordButton.onclick = () => {
     case RECORDER_STATE.INACTIVE:
       startRecorder();
       return;
+    case RECORDER_STATE.PAUSED:
+      // not yet handled;
+      return;
     default:
       return;
   }
@@ -107,10 +110,12 @@ async function selectSource(source) {
 function handleDataAvailable(e) {
   if (e.data && e.data.size > 0) recordedChunks.push(e.data);
 }
+
 function play() {
   var superBuffer = new Blob(recordedChunks);
   videoElement.src = window.URL.createObjectURL(superBuffer);
 }
+
 async function handleStop() {
   var blob = new Blob(recordedChunks, {
     type: 'video/webm',
