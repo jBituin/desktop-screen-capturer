@@ -16,8 +16,8 @@ const RECORDER_STATE = {
 };
 
 let recorder;
+let recordedChunks = [];
 const recorderOptions = { mimeType: 'video/webm; codecs=vp9' };
-const recordedChunks = [];
 
 const videoElement = document.querySelector('video');
 const recordingPulse = document.getElementById('recording-pulse');
@@ -44,7 +44,8 @@ recordButton.onclick = () => {
 selectVideo.onclick = showVideoSources;
 
 function startRecorder() {
-  recorder.start();
+  recordedChunks = [];
+  recorder.start(0);
   recordingText.innerText = 'Recording';
   recordingPulse.classList.toggle('inline-block');
 }
@@ -104,19 +105,34 @@ async function selectSource(source) {
 }
 
 function handleDataAvailable(e) {
-  recordedChunks.push(e.data);
+  if (e.data && e.data.size > 0) recordedChunks.push(e.data);
 }
-
+function play() {
+  var superBuffer = new Blob(recordedChunks);
+  videoElement.src = window.URL.createObjectURL(superBuffer);
+}
 async function handleStop() {
-  const buffer = await getBufferFromRecordedChunks(recordedChunks);
-  const { filePath } = await dialog.showSaveDialog({
-    buttonLabel: 'Save',
-    defaultPath: `scrn-rcrd-${Date.now()}.webm`,
+  var blob = new Blob(recordedChunks, {
+    type: 'video/webm',
   });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  document.body.appendChild(a);
+  a.style = 'display: none';
+  a.href = url;
+  a.download = `scrn-rcrd-${Date.now()}.webm`;
+  a.click();
+  window.URL.revokeObjectURL(url);
 
-  if (filePath) {
-    writeFile(filePath, buffer);
-  }
+  // const buffer = await getBufferFromRecordedChunks(recordedChunks);
+  // const { filePath } = await dialog.showSaveDialog({
+  //   buttonLabel: 'Save',
+  //   defaultPath: `scrn-rcrd-${Date.now()}.webm`,
+  // });
+
+  // if (filePath) {
+  //   writeFile(filePath, buffer, () => console.log('hakdog'));
+  // }
 }
 
 (async () => {
